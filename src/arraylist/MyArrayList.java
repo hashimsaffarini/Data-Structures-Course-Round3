@@ -16,11 +16,82 @@ public class MyArrayList<T> {
         size = 0;
     }
 
+    void addAll(MyArrayList<T> other) {
+        for (int i = 0; i < other.size(); i++) {
+            add(other.get(i));
+        }
+    }
+
+    void add(T... val) {
+        for (int i = 0; i < val.length; i++) {
+            add(val[i]);
+        }
+    }
+
     void add(T val) {
         if (size == arr.length) {
-            resize();
+            resize(arr.length * 2);
         }
         arr[size++] = val;
+    }
+
+    void add(int index, T val) {
+        if (index < 0 || index > size) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        if (size == arr.length) {
+            resize(arr.length * 2);
+        }
+        shiftRight(index);
+        arr[index] = val;
+    }
+
+    void shiftRight(int index) {
+        for (int i = size; i > index; i--) {
+            arr[i] = arr[i - 1];
+        }
+        size++;
+    }
+
+    T remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        T oldValue = arr[index];
+        shiftLeft(index);
+        return oldValue;
+    }
+
+    boolean remove(T val) {
+        int index = indexOf(val);
+        if (index != -1) {
+            remove(index);
+            return true;
+        }
+        return false;
+    }
+
+    void shiftLeft(int index) {
+        for (int i = index; i < size - 1; i++) {
+            arr[i] = arr[i + 1];
+        }
+        size--;
+        if (size > 0 && size == arr.length / 4) {
+            resize(arr.length / 2);
+        }
+    }
+
+    int indexOf(T val) {
+        for (int i = 0; i < size; i++) {
+            if (arr[i] != null && arr[i].equals(val)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    boolean contains(T val) {
+        return indexOf(val) != -1;
     }
 
     T set(int index, T val) {
@@ -41,8 +112,8 @@ public class MyArrayList<T> {
         size = 0;
     }
 
-    void resize() {
-        T temp[] = (T[]) new Object[arr.length * 2];
+    void resize(int newSize) {
+        T temp[] = (T[]) new Object[newSize];
         for (int i = 0; i < arr.length; i++) {
             temp[i] = arr[i];
         }
