@@ -118,6 +118,108 @@ public class LinkedListProblems {
         return a == null && b == null;
     }
 
+    static Node removeDuplicatesOneIteration(Node head) {
+        if (head == null) return head;
+        Node curr = head;
+        while (curr.next != null) {
+            if (curr.val == curr.next.val) {
+                curr.next = curr.next.next;
+            } else {
+                curr = curr.next;
+            }
+        }
+        return head;
+    }
+
+    static Node mergeAlternative(Node a, Node b) {
+        Node dummy = new Node(0), tail = dummy;
+        while (true) {
+            if (a == null) {
+                tail.next = b;
+                break;
+            } else if (b == null) {
+                tail.next = a;
+                break;
+            } else {
+                tail.next = a;
+                tail = a;
+                a = a.next;
+
+                tail.next = b;
+                tail = b;
+                b = b.next;
+            }
+        }
+        return dummy.next;
+    }
+
+    static Node sortedMerge(Node a, Node b) {
+        Node dummy = new Node(0), tail = dummy;
+        while (true) {
+            if (a == null) {
+                tail.next = b;
+                break;
+            } else if (b == null) {
+                tail.next = a;
+                break;
+            } else {
+                if (a.val <= b.val) {
+                    tail.next = a;
+                    tail = a;
+                    a = a.next;
+                } else {
+                    tail.next = b;
+                    tail = b;
+                    b = b.next;
+                }
+            }
+        }
+        return dummy.next;
+    }
+
+    static Node sortedMergeArray(Node[] arr) {
+        Node res = sortedMerge(arr[0], arr[1]);
+        for (int i = 2; i < arr.length; i++) {
+            res = sortedMerge(res, arr[i]);
+        }
+        return res;
+    }
+
+    static Node sortedIntersection(Node a, Node b) {
+        Node dummy = new Node(0), tail = dummy;
+        while (a != null && b != null) {
+            if (a.val == b.val) {
+                tail.next = new Node(a.val);
+                tail = tail.next;
+                a = a.next;
+                b = b.next;
+            } else if (a.val < b.val) {
+                a = a.next;
+            } else {
+                b = b.next;
+            }
+        }
+        return dummy.next;
+    }
+
+    static Node findKthNode(Node head, int k) {
+        int size = 0;
+        Node curr = head;
+        while (curr != null) {
+            size++;
+            curr = curr.next;
+        }
+
+        if (k > size) {
+            return null;
+        }
+        curr = head;
+        for (int i = 0; i < size - k; i++) {
+            curr = curr.next;
+        }
+        return curr;
+    }
+
     public static void main(String[] args) {
         MyLinkedList list = new MyLinkedList();
         list.add(10);
@@ -125,7 +227,7 @@ public class LinkedListProblems {
         list.add(30);
         list.add(40);
         list.add(50);
-        list.head = reverse(list.head);
-        System.out.println(list);
+        Node arr[] = {list.head, list.head, list.head, list.head};
+
     }
 }
