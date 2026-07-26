@@ -131,6 +131,19 @@ public class ArrayListProblems {
         return res;
     }
 
+    static void removePairs(ArrayList<Integer> list, int k) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i) + list.get(i + 1) == k) {
+                list.remove(i);
+                list.remove(i);
+                i -= 2;
+                if (i < -1) {
+                    i = -1;
+                }
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
         System.out.println(generatePascal(6));

@@ -220,14 +220,146 @@ public class LinkedListProblems {
         return curr;
     }
 
+    static Node removeLocalPeaks(Node head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return head;
+        }
+        Node prev = head, curr = head.next;
+        while (curr.next != null) {
+            if (curr.val > prev.val && curr.val > curr.next.val) {
+                prev.next = curr.next;
+                curr = prev.next;
+            } else {
+                prev = curr;
+                curr = curr.next;
+            }
+        }
+        return head;
+    }
+
+    static Node getIntersectionNode(Node headA, Node headB) {
+        if (headA == null || headB == null) return null;
+        Node a = headA, b = headB;
+        while (a != b) {
+            if (a == null) {
+                a = headB;
+            } else {
+                a = a.next;
+            }
+            if (b == null) {
+                b = headA;
+            } else {
+                b = b.next;
+            }
+        }
+        return a;
+    }
+
+    static Node removeFromNToM(Node head, int n, int m) {
+        if (head == null) return head;
+
+        Node curr = head, curr1 = null, curr2 = null;
+        for (int i = 0; curr != null; i++) {
+            if (i == n - 1) {
+                curr1 = curr;
+            }
+            if (i == m) {
+                curr2 = curr;
+            }
+            curr = curr.next;
+        }
+        if (curr1 != null && curr2 != null) {
+            curr1.next = curr2.next;
+        }
+        return head;
+    }
+
+    static Node swapNodes(Node head, int index1, int index2) {
+        if (head == null || index1 == index2 || index1 < 0 || index2 < 0) {
+            return head;
+        }
+        if (index1 > index2) {
+            int temp = index1;
+            index1 = index2;
+            index2 = temp;
+        }
+        Node prev1 = null, node1 = head;
+        for (int i = 0; i < index1 && node1 != null; i++) {
+            prev1 = node1;
+            node1 = node1.next;
+        }
+        Node prev2 = null, node2 = head;
+        for (int i = 0; i < index2 && node2 != null; i++) {
+            prev2 = node2;
+            node2 = node2.next;
+        }
+        if (node1 == null || node2 == null) return head;
+        if (node1.next == node2) {
+            if (prev1 != null) {
+                prev1.next = node2;
+            } else {
+                head = node2;
+            }
+            node1.next = node2.next;
+            node2.next = node1;
+            return head;
+        }
+        if (prev1 != null) {
+            prev1.next = node2;
+        } else {
+            head = node2;
+        }
+        prev2.next = node1;
+        Node temp = node1.next;
+        node1.next = node2.next;
+        node2.next = temp;
+        return head;
+    }
+
+    static Node swapPairs(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node newHead = head.next;
+        Node prev = null, curr = head;
+        while (curr != null && curr.next != null) {
+            Node next = curr.next;
+            curr.next = next.next;
+            next.next = curr;
+            if (prev != null) {
+                prev.next = next;
+            }
+            prev = curr;
+            curr = curr.next;
+        }
+        return newHead;
+    }
+
+    static Node removeDuplicatesWithoutDS(Node head) {
+        for (Node i = head; i != null; i = i.next) {
+            for (Node j = i; j.next != null; ) {
+                if (i.val == j.next.val) {
+                    j.next = j.next.next;
+                } else {
+                    j = j.next;
+                }
+            }
+        }
+        return head;
+    }
+
     public static void main(String[] args) {
         MyLinkedList list = new MyLinkedList();
-        list.add(10);
-        list.add(20);
-        list.add(30);
-        list.add(40);
-        list.add(50);
-        Node arr[] = {list.head, list.head, list.head, list.head};
+        /// 2 5 3 7 6 8 4
+        list.add(2);
+        list.add(5);
+        list.add(3);
+        list.add(7);
+        list.add(6);
+        list.add(8);
+        list.add(4);
+        list.head = removeLocalPeaks(list.head);
+        System.out.println(list);
 
     }
 }
