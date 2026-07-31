@@ -66,6 +66,39 @@ public class StackProblems {
         return stack.isEmpty();
     }
 
+    static boolean isPalindrome(Stack<Integer> a) {
+        Stack<Integer> b = new Stack<>();
+        int c = 0;
+        while (!a.isEmpty()) {
+            c++;
+            b.push(a.pop());
+        }
+        for (int i = 0; i < c / 2; i++) {
+            a.push(b.pop());
+        }
+        if (c % 2 != 0) {
+            b.pop();
+        }
+        while (!a.isEmpty()) {
+            if (a.pop() != b.pop()) return false;
+        }
+        return true;
+    }
+
+    static void sortStack(Stack<Integer> s) {
+        Stack<Integer> t = new Stack<>();
+        while (!s.isEmpty()) {
+            int temp = s.pop();
+            while (!t.isEmpty() && temp > t.peek()) {
+                s.push(t.pop());
+            }
+            t.push(temp);
+        }
+        while (!t.isEmpty()) {
+            s.push(t.pop());
+        }
+    }
+
     public static void main(String[] args) {
         Stack<Integer> s = new Stack<>();
         Stack<Integer> s2 = new Stack<>();
