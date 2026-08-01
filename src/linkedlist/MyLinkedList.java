@@ -5,12 +5,12 @@ public class MyLinkedList {
     private int size;
 
 
-    MyLinkedList() {
+    public MyLinkedList() {
         head = tail = null;
         size = 0;
     }
 
-    void add(int val) {
+    public void add(int val) {
         Node newNode = new Node(val);
         if (head == null) {
             head = newNode;
@@ -70,16 +70,16 @@ public class MyLinkedList {
         return head.val;
     }
 
-    int getLast() {
+    public int getLast() {
         if (tail == null) throw new NullPointerException();
         return tail.val;
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
-    int remove(int index) {
+    public int remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(index);
         }
